@@ -24,4 +24,7 @@ const port = 3030;
 
 const server = app.listen(port, ()=>{console.log(`running on localhost: ${port}`)})
 
-app.get("/ProgramData",function())
+//Javascript object as the App Endpoint
+app.get("/projectData", (request, response)=> {
+  response.send(projectData);
+});

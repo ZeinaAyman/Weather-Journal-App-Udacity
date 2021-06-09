@@ -24,14 +24,16 @@ const port = 3030;
 
 const server = app.listen(port, ()=>{console.log(`running on localhost: ${port}`)})
 
-//Get Route, Javascript object as the App Endpoint
-app.get('/all', (request, response)=> {
+//Get Route, send js object
+app.get('/getData', (request, response)=> {
   response.send(projectData);
 });
 
 //Post route
-app.post('/add', (request, response) => {
-  console.log(request.body);
-  projectData.push(request.body);
-  response.send('POST received');
+app.post('/saveData', (request, response) => {
+  //request.body contains temperature, date and content. use three dots { ...} to avoid having any changes registered to the request.body
+  projectData = { ...request.body};
+  console.log(projectData);
+  //closing the request
+  response.end();
 })

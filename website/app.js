@@ -1,12 +1,11 @@
 /* Global Variables */
+const keyApi='d80f65f935fee4f923369e08455eda21';
 
-//API call provided in email: api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d80f65f935fee4f923369e08455eda21
-const keyAPI = 'd80f65f935fee4f923369e08455eda21';
 
 const generate = document.getElementById("generate");
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+let newDate = (d.getMonth()+1)+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 generate.addEventListener("click", async ()=>{
   const zipCode = document.getElementById("zip").value;
@@ -18,7 +17,7 @@ generate.addEventListener("click", async ()=>{
   }
 
   //API response
-   const apiRes = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + keyAPI + '&units=metric');
+   const apiRes = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + keyApi + '&units=metric');
    const data = await apiRes.json();
    const temp = data.main.temp;
 
@@ -60,9 +59,12 @@ const getWeather = async (url='') =>{
 //Display in Index.html
 const addToUI = async () =>{
   const request = await fetch("/getData")
-  const weatherData = await request.json();
-
-  document.getElementById("date").innerHTML = "Date: " + weatherData.date;
-  document.getElementById("temp").innerHTML = "Temperature: " + weatherData.temp;
-  document.getElementById("content").innerHTML = "Feelings: " + weatherData.feelings;
+  try {
+    const weatherData = await request.json();
+    document.getElementById("date").innerHTML = "Date: " + weatherData.date;
+    document.getElementById("temp").innerHTML = "Temperature: " + weatherData.temp;
+    document.getElementById("content").innerHTML = "Feelings: " + weatherData.feelings;
+  }catch(err){
+    alert("An error has Occured.",err);
+  }
 }

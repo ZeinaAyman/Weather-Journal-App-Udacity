@@ -10,13 +10,59 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 generate.addEventListener("click", async ()=>{
   const zipCode = document.getElementById("zip").value;
+  const feelings = document.getElementById('feelings').value;
 
+  //zip code validation
   if(zipCode == ''){
     alert("Error. Zip Code is empty!");
   }
 
+  //API response
+   const apiRes = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + keyAPI + '&units=metric');
+   const data = await apiRes.json();
+   const temp = data.main.temp;
 
-  const apiRes = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + keyAPI)
-  const data = await apiRes.json();
-  console.log(data);
+   postWeather('/saveData',{temp: temp, date: newDate, feelings: feelings })
+   .then(function(){
+     addToUI();
+   })
+
 });
+
+//Async Post
+async function postWeather(url, data = {}){
+  await fetch(url,{
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+
+//Async GET
+const getWeather = async (url='') =>{
+  const request = await fetch(url,{
+    credentials: 'same-origin',
+  });
+  try {
+  // Transform into JSON
+  const weatherData = await request.json();
+  return weatherData
+  }
+  catch(err) {
+    alert("a GET Error has occured: ",err);
+  }
+}
+
+//Display in Index.html
+const addToUI = async () =>{
+  const request = await fetch("/getData")
+  const weatherData = await request.json();
+
+  document.getElementById("date").innerHTML = "Date: " + weatherData.date;
+  document.getElementById("temp").innerHTML = "Temperature: " + weatherData.temp;
+  document.getElementById("content").innerHTML = "Feelings: " + weatherData.feelings;
+}

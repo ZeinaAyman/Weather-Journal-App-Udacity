@@ -24,7 +24,14 @@ const port = 3030;
 
 const server = app.listen(port, ()=>{console.log(`running on localhost: ${port}`)})
 
-//Javascript object as the App Endpoint
-app.get("/projectData", (request, response)=> {
+//Get Route, Javascript object as the App Endpoint
+app.get('/all', (request, response)=> {
   response.send(projectData);
 });
+
+//Post route
+app.post('/add', (request, response) => {
+  console.log(request.body);
+  projectData.push(request.body);
+  response.send('POST received');
+})

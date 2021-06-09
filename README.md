@@ -10,8 +10,6 @@ This project requires you to create an asynchronous web app that uses Web API an
 - Install packages Express, Body-Parser, and Cors from the terminal.
 - Run server using Node in the terminal.
 
-## Extras
-If you are interested in testing your code as you go, you can use `tests.js` as a template for writing and running some basic tests for your code.
 
 ## Dependencies
 - Node
